@@ -3,22 +3,20 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Http\Controllers\Controller\Config;
+use App\Http\Controllers\Admin\CommonController;
 use Illuminate\Database\Events\StatementPrepared;
 use Illuminate\Support\Facades\Event;
 use PDO;
 use DB;
 
-class IndexController extends Controller
+class IndexController extends CommonController
 {
     protected $adminRules;
     //后台框架
     public function index()
     {
         //加载配置文件
-        $config = new ConfigController();
-        $config = $config->index();
+        
 
     
         //加载栏目数据
@@ -43,7 +41,7 @@ class IndexController extends Controller
         $menus = json_encode($menus,true);
         $data = [
             'menus' => $menus,
-            'lang'  => $config
+            'lang'  => $this->config
         ];
         return view('admin.index')->with($data);
     }
