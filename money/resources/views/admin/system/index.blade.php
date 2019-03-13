@@ -168,6 +168,7 @@
                 });
             }
         });
+        //weishatijiao不行
         //提交监听
         form.on('submit(sys)', function (data) {
             loading =layer.load(1, {shade: [0.1,'#fff']});
