@@ -35,7 +35,7 @@
                 </li>
                 <li class="layui-nav-item">
                     <a href="javascript:;" class="admin-header-user">
-                        <img src="{:session('avatar')}" class="layui-nav-img" />
+                        <!-- <img src="{:session('avatar')}" class="layui-nav-img" /> -->
                         <span><!-- {:session('username')} -->showKiller</span>
                     </a>
                     <dl class="layui-nav-child">

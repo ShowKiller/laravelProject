@@ -16,13 +16,17 @@ class adminLogin
      */
     public function handle($request, Closure $next)
     {
+        // dd($request->route()->name('aa'));
+        // if ($request->route()->named('profile')) {
+        //
+        // }
         //判断用户是否登录
-        if(session('adminUserInfo'))
-        {
+        // if(session('adminUserInfo'))
+        // {
             return $next($request);
-        }else
-        {
-            return redirect('/admin/login');
-        }
+        // }else
+        // {
+        //     return redirect('/admin/login');
+        // }
     }
 }

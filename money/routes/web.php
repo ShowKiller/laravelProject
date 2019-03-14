@@ -100,9 +100,9 @@ Route::get('conf',function(){
 // });
 // ,'middleware' => 'login'
 Route::get('/admin/login','Admin\LoginController@index');
-Route::group(['namespace' => 'Admin','prefix' => 'admin'],function(){
+Route::group(['namespace' => 'Admin','prefix' => 'admin','middleware' => 'login'],function(){
     //首页路由
-    Route::get('/index','IndexController@index');
+    Route::get('/','IndexController@index');
     //主体路由
     Route::get('/main','IndexController@main');
     //用户资源路由
@@ -114,7 +114,8 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin'],function(){
     //配置文件
     Route::get('config','ConfigController@index');
     //系统设置
-    Route::any('/system/system','SystemController@index');
+    Route::resource('/system','SystemController');
+    
     
     // Route::resource('admin/user','UserController');
 });

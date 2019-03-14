@@ -12,5 +12,6 @@
     <link rel="stylesheet" href="/static/plugins/layui/css/layui.css" media="all" />
     <link rel="stylesheet" href="/static/admin/css/global.css" media="all">
     <link rel="stylesheet" href="/static/common/css/font.css" media="all">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body class="skin-<?php if(!empty($_COOKIE['skin'])){echo $_COOKIE['skin'];}else{echo '0';setcookie('skin','0');}?>">

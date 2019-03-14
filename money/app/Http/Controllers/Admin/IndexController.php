@@ -16,13 +16,9 @@ class IndexController extends CommonController
     public function index()
     {
         //加载配置文件
-        
-
-    
-        //加载栏目数据
         //声明数组
         $menus = [];
-        $authRule = DB::table('auth_rule')->where('menustatus','=',1)->orderBy('sort','asc')->get();
+        $authRule = DB::table('auth_rule1')->where('menustatus','=',1)->orderBy('sort','asc')->get();
 
         
         foreach ($authRule as $key=>$val){

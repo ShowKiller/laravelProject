@@ -12,6 +12,7 @@
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
                 <form class="layui-form layui-form-pane" lay-filter="form-system">
+                    @csrf
                     <div class="layui-form-item">
                         <label class="layui-form-label">{{$lang['websiteName']}}</label>
                         <div class="layui-input-4">
@@ -29,7 +30,7 @@
                         <input type="hidden" name="logo" id="logo">
                         <div class="layui-input-block">
                             <div class="layui-upload">
-                                <button type="button" class="layui-btn layui-btn-primary" id="logoBtn"><i class="icon icon-upload3"></i>点击上传</button>
+                                <button type="button" class="layui-btn layui-btn-primary"  id="logoBtn"><i class="icon icon-upload3"></i>点击上传</button>
                                 <div class="layui-upload-list">
                                     <img class="layui-upload-img" id="cltLogo">
                                     <p id="demoText"></p>
@@ -77,6 +78,7 @@
             </div>
             <div class="layui-tab-item">
                 <form class="layui-form layui-form-pane" lay-filter="form-system">
+                    @csrf
                     <div class="layui-form-item">
                         <label class="layui-form-label">{{$lang['seoTitle']}}</label>
                         <div class="layui-input-4">
@@ -106,6 +108,7 @@
             </div>
             <div class="layui-tab-item">
                 <form class="layui-form layui-form-pane" lay-filter="form-system">
+                    @csrf
                     <div class="layui-form-item">
                         <label class="layui-form-label">手机端</label>
                         <div class="layui-input-block">
@@ -136,21 +139,22 @@
 <script>
     layui.use(['form', 'layer','upload','element'], function () {
         var form = layui.form,layer = layui.layer,upload = layui.upload,$ = layui.jquery,element = layui.element;
-        var seytem = {$system|raw};
+        var seytem = {!!$system!!};
         form.val("form-system", seytem);
         $('#cltLogo').attr('src',seytem.logo);
 
         //普通图片上传
         var uploadInst = upload.render({
-            elem: '#logoBtn'
-            ,url: '{:url("UpFiles/upload")}'
-            ,before: function(obj){
+            elem: '#logoBtn',
+            url: '/api/uploadpic',
+            before: function(obj){
+                
                 //预读本地文件示例，不支持ie8
                 obj.preview(function(index, file, result){
                     $('#cltLogo').attr('src', result); //图片链接（base64）
                 });
-            }
-            ,done: function(res){
+            },
+            done: function(res){
                 //上传成功
                 if(res.code>0){
                     $('#logo').val(res.url);
@@ -158,8 +162,8 @@
                     //如果上传失败
                     return layer.msg('上传失败');
                 }
-            }
-            ,error: function(){
+            },
+            error: function(){
                 //演示失败状态，并实现重传
                 var demoText = $('#demoText');
                 demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
@@ -171,9 +175,11 @@
         //weishatijiao不行
         //提交监听
         form.on('submit(sys)', function (data) {
+            console.log(data.field);
             loading =layer.load(1, {shade: [0.1,'#fff']});
-            $.post("{:url('system/system')}",data.field,function(res){
+            $.post("/admin/system",data.field,function(res){
                 layer.close(loading);
+                var res = JSON.parse(res);
                 if(res.code > 0){
                     layer.msg(res.msg,{icon: 1, time: 1000},function(){
                         location.href = res.url;
