@@ -115,8 +115,10 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin','middleware' => 'login'
     Route::get('config','ConfigController@index');
     //系统设置
     Route::resource('/system','SystemController');
-    
-    
+    //管理员页面
+    Route::resource('/auth','AuthController');
+    //管理员渲染页面
+    Route::post('/auth/apishow','AuthController@apiShow');
     // Route::resource('admin/user','UserController');
 });
 //登录路由
