@@ -7,11 +7,23 @@
 </div>
 
 @include('admin.common.foot')
-<script type="text/html" id="barDemo">
-    <a href="/admin/auth/1/edit" class="layui-btn layui-btn-xs">{{$lang['edit']}}</a>
-    
-</script>
 
+</script>
+<script type="text/html" id="barDemo">
+    <a href="/admin/auth/@{{d.admin_id}}/edit" class="layui-btn layui-btn-xs">{{$lang['edit']}}</a>
+    @{{# if(d.admin_id==1){ }}
+    <a href="#" class="layui-btn layui-btn-xs layui-btn-disabled">{{$lang['del']}}</a>
+    @{{# }else{  }}
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">{{$lang['del']}}</a>
+    @{{# } }}
+</script>
+<script type="text/html" id="open">
+    @{{# if(d.admin_id==1){ }}
+        <input type="checkbox" disabled name="is_open" value="@{{d.admin_id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="open" checked>
+    @{{# }else{  }}
+        <input type="checkbox" name="is_open" value="@{{d.admin_id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="open" @{{ d.is_open == 1 ? 'checked' : '' }}>
+    @{{# } }}
+</script>
 <script type="text/html" id="topBtn">
    <a href="/admin/auth/create" class="layui-btn layui-btn-sm">{{$lang['add']}}{{$lang['admin']}}</a>
 </script>
@@ -20,7 +32,7 @@
         var table = layui.table,form = layui.form,$ = layui.jquery;
         var tableIn = table.render({
             elem: '#list',
-            url: '/admin/auth',
+            url: '/admin/auth/apishow',
             method:'post',
 			toolbar: '#topBtn',
 			title:'{{$lang["admin"]}}{{$lang["list"]}}',
@@ -36,11 +48,13 @@
                 ,{width:160, align:'center', toolbar: '#barDemo'}
             ]]
         });
+        
         form.on('switch(open)', function(obj){
             loading =layer.load(1, {shade: [0.1,'#fff']});
             var id = this.value;
             var is_open = obj.elem.checked===true?1:0;
-            $.post('{:url("adminState")}',{'id':id,'is_open':is_open},function (res) {
+
+            $.post('/admin/auth/status',{'id':id,'is_open':is_open,'_token':'{{ csrf_token() }}'},function (res) {
                 layer.close(loading);
                 if (res.status==1) {
                     tableIn.reload();
@@ -53,8 +67,8 @@
         table.on('tool(list)', function(obj){
             var data = obj.data;
             if(obj.event === 'del'){
-                layer.confirm('{:lang("Are you sure you want to delete it")}', function(index){
-                    $.post("{:url('adminDel')}",{admin_id:data.admin_id},function(res){
+                layer.confirm('Are you sure you want to delete it', function(index){
+                    $.post("/admin/auth/"+data.admin_id,{admin_id:data.admin_id,_token:"{{csrf_token()}}",'_method':'DELETE'},function(res){
                         if(res.code==1){
                             layer.msg(res.msg,{time:1000,icon:1});
                             obj.del();

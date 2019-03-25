@@ -119,6 +119,24 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin','middleware' => 'login'
     Route::resource('/auth','AuthController');
     //管理员渲染页面
     Route::post('/auth/apishow','AuthController@apiShow');
+    
+    Route::post('/auth/status','AuthController@status');
+    //获取管理员分组信息
+    Route::post('/auth/group','AuthController@group');
+    //获取信息2
+    Route::post('/auth/Del','AuthController@Del');
+    //用户组列表
+    Route::resource('user','UserController');
+    //修改用户规则
+    Route::get('/user/rule/{id}','UserController@ruleshow');
+    Route::post('/user/rule/{id}','UserController@editrule');
+    //权限控制
+    Route::resource('/authority','AuthorityController');
+    //权限控制->验证
+    Route::post('/authority/isvaildate','AuthorityController@isVaildate');
+    //权限控制->修改状态
+    Route::post('/authority/state','AuthorityController@state');
+    Route::post('/authority/order','AuthorityController@order');
     // Route::resource('admin/user','UserController');
 });
 //登录路由
