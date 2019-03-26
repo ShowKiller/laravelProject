@@ -47,7 +47,15 @@ class AuthorityController extends CommonController
      */
     public function create()
     {
-        //
+        //查询所有权限
+        $menu = $this->getMenus();
+        $res = $this->comMenu($menu);
+        
+        $data = [
+            'lang' => $this->config,
+            'info' => $res
+        ];
+        return view('admin.authority.create')->with($data);
     }
 
     /**
@@ -58,7 +66,17 @@ class AuthorityController extends CommonController
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->except(['_token','_method']);
+
+        if($data['icon'] == null)
+            unset($data['icon']);
+        $res = DB::table('auth_rule1')->insert($data);
+        if($res)
+        {
+            return ['code' => 1, 'msg' => '添加成功', 'url' => '/admin/authority'];
+        }
+            return ['code' => 0, 'msg' => '添加失败', 'url' => '/admin/authority'];
+
     }
 
     /**
@@ -99,6 +117,8 @@ class AuthorityController extends CommonController
     public function update(Request $request, $id)
     {
         $data = $request->except(['_token','_method']);
+        if($data['icon'] == null)
+            unset($data['icon']);
         $res = DB::table('auth_rule1')->where('id','=',$id)->update($data);
         if($res !== false)
         {

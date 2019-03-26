@@ -4,7 +4,7 @@
         <legend>权限{{$lang['list']}}</legend>
     </fieldset>
     <blockquote class="layui-elem-quote">
-        <a href="" class="layui-btn layui-btn-sm">{{$lang['add']}}节点</a>
+        <a href="/admin/authority/create" class="layui-btn layui-btn-sm">{{$lang['add']}}节点</a>
         <a href="" class="layui-btn layui-btn-sm layui-btn-danger">清除节点</a>
         <a class="layui-btn layui-btn-normal layui-btn-sm"  onclick="openAll();">展开或折叠全部</a>
     </blockquote>
